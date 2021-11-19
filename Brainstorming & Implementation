@@ -10,4 +10,4 @@ Game of Life 2 (might be too elaborate)
 
 Find Closest Object/Destination (simpler version of game of life 2)
 - Nearest neighbor search using euclidean distance.
-    -Employ search method to calculation shortest distance node stored in the 2-d tree (x, y coords).
+    -Employ search method to calculate shortest distance node stored in the 2-d tree (x, y coords).
