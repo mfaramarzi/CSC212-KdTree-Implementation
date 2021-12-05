@@ -126,7 +126,7 @@ int main(){
     std::ofstream file_("coords.txt"); //output file .txt
 
     for (int i = 0; i < num_points; i++){
-        rand_x = rand() % *(max_x + 1); //random value ranges from 0 - max_x
+        rand_x = rand() % (max_x + 1); //random value ranges from 0 - max_x
         rand_y = rand() % (max_y + 1); //random value ranges from 0 - max_y
         file_ << rand_x << " " << rand_y;
         if (i != num_points - 1)
