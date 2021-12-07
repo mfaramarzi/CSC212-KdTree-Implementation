@@ -8,7 +8,7 @@ Node::Node(std::vector<int> &data)//node constructor getting 1-d vector of point
     {
         this->data.push_back(data[i]); //writing all values of a data point to the node
 
-        // std::cout << "i is " << data[i] << "\n";//printing the axis (dimension) 0,1,2...k //Why do we need to print them.for testing???????
+        // std::cout << data[i] <<"\n";//printing the axis (dimension) 0,1,2...k //Why do we need to print them.for testing???????
     }
 
     this->left = nullptr;//Assigning two null pointer to the new node's pointer named left
@@ -49,10 +49,11 @@ bool KDTree::sortcol( const std::vector<int>& v1, const std::vector<int>& v2) {
 // in K Dimensional space
 bool KDTree::arePointsSame(std::vector<int> point1, std::vector<int> point2){
     // Compare individual pointinate values
-    for (int i = 0; i < k; ++i)
+    for (int i = 0; i < k; ++i){
+        std::cout<<point1[i]<<" "<<point2[i]<<std::endl;
         if (point1[i] != point2[i])
-            return false;
-  
+            return false;}
+    std::cout<<"returning True"<<std::endl;
     return true;
 }
 
@@ -60,9 +61,13 @@ bool KDTree::arePointsSame(std::vector<int> point1, std::vector<int> point2){
 
 KDTree::KDTree(std::vector<std::vector<int>> vec_2d){ //KDTree constructor
 
+    root = nullptr;
+
     depth = 0; //Initiate depth as zero for the root node
 
     k = vec_2d[0].size();  //FINDING THE NUMBER OF DIMENSIONS FROM THE 2-D VECTOR OF POINTS
+
+    // std::cout<<k;
 }
 
 // ---------------------------------------------------------------
@@ -103,26 +108,42 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){/
 // calling node constructor and inputting the median as the parameter
 
 
+    Node* root_node = new Node (vec_2d[Med_point_idx]);//how is it connected to its parent node??I should call node class here
 
+    
 
-    Node root_node(vec_2d[Med_point_idx]);//how is it connected to its parent node??I should call node class here
+    /*file<<
+    //printing three elements of a k=3 point in pranthesis seperated by comma
 
-std::vector<std::vector<int>>vec_2d_left;
+    for (int i = 0; i < vec_2d.size() ; i++)
+        std::std::cout<<'_'<<vec_2d[Med_point_idx][i] <<" -> "<<;
 
-std::vector<std::vector<int>>vec_2d_right;
+    
+    */
 
-vec_2d_left = std::vector<std::vector<int>>(vec_2d.begin(), vec_2d.begin()+ Med_point_idx); //using std::vector's copy constructor
+    std::vector<std::vector<int>>vec_2d_left;
 
-vec_2d_right = std::vector<std::vector<int>>( vec_2d.begin()+ Med_point_idx + 1 , vec_2d.end()); //using std::vector's copy constructor
+    std::vector<std::vector<int>>vec_2d_right;
+
+    vec_2d_left = std::vector<std::vector<int>>(vec_2d.begin(), vec_2d.begin()+ Med_point_idx); //using std::vector's copy constructor
+
+    vec_2d_right = std::vector<std::vector<int>>( vec_2d.begin()+ Med_point_idx + 1 , vec_2d.end()); //using std::vector's copy constructor
 
 // Recursive calls on the left node and right node
 
 // /I want the constructed tree in this level, points to the left node, which is a recursive funct to tree constructor
-    root_node.left = populate_tree (vec_2d_left , depth + 1);//Check the first last
+    root_node->left = populate_tree (vec_2d_left , depth + 1);//Check the first last
     //popule
 
-    root_node.right = populate_tree (vec_2d_right, depth + 1);
+    root_node->right = populate_tree (vec_2d_right, depth + 1);
 
+    dot_file_conn.push_back(vec_2d[Med_point_idx]);//Making a 2-d vector on nodes, in a sequence that every two adjacent points will have a connection
+
+    dot_file_conn.push_back(root_node->left->data );
+
+    dot_file_conn.push_back(root_node->right->data);
+
+    return root_node;
 }
 
 // ---------------------------------------------------------
@@ -131,7 +152,7 @@ vec_2d_right = std::vector<std::vector<int>>( vec_2d.begin()+ Med_point_idx + 1 
 // The parameter depth is used to decide axis of comparison
 Node* KDTree::insert(Node *root, std::vector<int> new_pnt, int depth){//Private insert method
     // Tree is empty?
-    if (root == NULL)
+    if (root == nullptr)
        return new Node(new_pnt);
   
     // Calculate current dimension (cd) of comparison
@@ -152,9 +173,10 @@ Node* KDTree::insert(Node *root, std::vector<int> new_pnt, int depth){//Private 
 // Function to insert a new point with given point in
 // KD Tree and return new root. It mainly uses above recursive
 // function "insertRec()"
-Node* KDTree::insert( std::vector<int> new_pnt)//Public insert function//removed
+void KDTree::insert( std::vector<int> new_pnt)//Public insert function//removed
+    
 {
-    return insert(root, new_pnt, 0);
+    root = insert(root , new_pnt, 0);
 }
 // -----------------------------------------------------------
 
@@ -162,7 +184,7 @@ Node* KDTree::insert( std::vector<int> new_pnt)//Public insert function//removed
 // The parameter depth is used to determine current axis.
 bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){//Private search function
     // Base cases
-    if (root == NULL)
+    if (root == nullptr)
         return false;
     if (arePointsSame(new_pnt, root->data))//arguments should be the searching 1-d vec and the node's (root) vec//checking if both points have same values
         return true;
@@ -188,3 +210,59 @@ bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){//Private 
         // Pass current depth as 0
         return search(root, new_pnt, 0);
     }
+    // -------------------------------------------------------
+    // Traverse in order
+    std::vector<std::vector<int>> KDTree::inOrder(Node* root) {
+        std::vector<std::vector<int>> v;
+        std::stack<Node*> s;
+        
+        if (root==NULL)
+            return v;
+            
+        Node* node = root;
+        
+        while (1) {
+            if (node != NULL) {
+                s.push(node);
+                node = node->left;
+            }
+            else {
+                if (s.empty())
+                    break;
+                    
+                node = s.top();
+                s.pop();
+                v.push_back(node->data);
+                
+                node = node->right;
+            }
+    }
+    }
+
+    // Making .dot file 
+
+    void KDTree::write_dot_file(){
+
+        std::ofstream file_("dot_file.txt"); //output file .txt
+
+        for (int i = 0; i < dot_file_conn.size() - 1; i++){//for every data point
+
+            for(int j = 0 ; j<dot_file_conn[i].size() ; j++){
+
+                file_ << "_" << dot_file_conn[i][j] ;
+            }
+
+           file_  <<" -> ";
+           
+           for(int j = 0 ; j<dot_file_conn[i].size() ; j++){
+
+               file_ <<"_" << dot_file_conn[i + 1][j] ;     
+            }
+
+            file_ <<"\n" ;
+        }
+
+    file_.close(); 
+    }
+// I should find the first point before each point with higher k and connect those two points
+// push what they point to
