@@ -20,7 +20,7 @@ class Node
 
         void getData();// Function ro read k values of a node
 
-
+        
 
 };
 
@@ -34,30 +34,33 @@ class KDTree{
 
     private:
 
-        Node* root;//A pointer to the root node (private)
-
-        Node* insert(Node *root, std::vector<int> new_pnt, int depth);
+        
 
         int k; //number of dimensions
 
-
-        //
+        
+        // insert method
+        Node *insert(Node *root, std::vector<int> new_pnt, int depth);
 
         std::vector<std::vector<int>> vec_2d; //2-d vector containing bunch of k-dim points.
 
         static bool sortcol( const std::vector<int>& v1, const std::vector<int>& v2 );
         // Using objects???
         // wrape array and vec in a struct???
-        //
+        // 
 
         bool arePointsSame(std::vector<int> point1, std::vector<int> point2);
 
         inline static int dim_each_rec;
         // inline????
 
+         bool search(Node *root, std::vector<int> new_pnt, int depth);
+
     public:
 
         int depth; //value to store the depth, starting from zero, ending the depth of last leaf.
+
+        Node* root;//A pointer to the root node (private)
 
         KDTree(std::vector<std::vector<int>> vec_2d);//Class KDTree constructor. Will result in a balanced KDTree object populated by the nodes containing K dimensional points from 2-d vector
 
@@ -66,18 +69,20 @@ class KDTree{
         Node* populate_tree(std::vector<std::vector<int>> vec_2d , int depth );
 
         // insert Method
-        void insert(std::vector<int> new_pnt);
-
+        
+        Node* insert( std::vector<int> new_pnt);//removed Node *root,
+        
         // Search method
-        bool search(Node *root, std::vector<int> new_pnt, int depth);
-
-
+        bool search( std::vector<int> new_pnt);//removed Node *root, from public method
+        
+      
         // Delete Method??????????????
 
         // nearest neighbor method??????????????????
-
+        
 
 };
+
 
 
 

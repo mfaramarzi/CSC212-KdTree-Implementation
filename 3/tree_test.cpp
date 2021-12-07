@@ -2,15 +2,13 @@
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-//Private
-
 Node::Node(std::vector<int> &data)//node constructor getting 1-d vector of points
 {
     for (int i = 0; i < data.size(); i++)//iterate over all values of a data point
     {
         this->data.push_back(data[i]); //writing all values of a data point to the node
 
-        std::cout << "i is " << data[i] << "\n";//printing the axis (dimension) 0,1,2...k //Why do we need to print them.for testing???????
+        // std::cout << "i is " << data[i] << "\n";//printing the axis (dimension) 0,1,2...k //Why do we need to print them.for testing???????
     }
 
     this->left = nullptr;//Assigning two null pointer to the new node's pointer named left
@@ -31,43 +29,10 @@ void Node::getData()//function to read k values of a data point from a node
     }
 }
 
-Node* KDTree::insert(Node *root, std::vector<int> new_pnt, int depth){
-    // Tree is empty?
-    if (root == NULL)
-    {
-       return new Node(new_pnt);
-    }
-    // Calculate current dimension (cd) of comparison
-    unsigned cd = depth % k;
-
-    //
-        std::cout << "cd is " << cd << "\n";
-    //
-
-    // Compare the new point with root on current dimension 'cd'
-    // and decide the left or right subtree
-    if (new_pnt[cd] < (root->data[cd]))//if the value of current axis for the new point is less than corresponding value for the current node (root node)
-    {
-        //
-        std::cout << "root->data[cd] is " << root->data[cd] << "\n";
-        //
-        root->left  = insert(root->left, new_pnt, depth + 1);
-    }
-    else
-    {
-                //
-        std::cout << "root->data[cd] is " << root->data[cd] << "\n";
-        //
-        root->right = insert(root->right, new_pnt, depth + 1);
-    }
-    return root;
-}
-
 
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //Tree Class Functions
 
-//Public
 
 // Driver function to sort the 2D vector on basis of a particular column
 // return
@@ -85,13 +50,9 @@ bool KDTree::sortcol( const std::vector<int>& v1, const std::vector<int>& v2) {
 bool KDTree::arePointsSame(std::vector<int> point1, std::vector<int> point2){
     // Compare individual pointinate values
     for (int i = 0; i < k; ++i)
-    {
         if (point1[i] != point2[i])
-        {
             return false;
-        }
-    }
-
+  
     return true;
 }
 
@@ -168,36 +129,62 @@ vec_2d_right = std::vector<std::vector<int>>( vec_2d.begin()+ Med_point_idx + 1 
 
 // Inserts a new node and returns root of modified tree
 // The parameter depth is used to decide axis of comparison
+Node* KDTree::insert(Node *root, std::vector<int> new_pnt, int depth){//Private insert method
+    // Tree is empty?
+    if (root == NULL)
+       return new Node(new_pnt);
+  
+    // Calculate current dimension (cd) of comparison
+    unsigned cd = depth % k;
+  
+    // Compare the new point with root on current dimension 'cd'
+    // and decide the left or right subtree
+    if (new_pnt[cd] < (root->data[cd]))//if the value of current axis for the new point is less than corresponding value for the current node (root node)
 
-void KDTree::insert(std::vector<int> new_pnt)
+        root->left  = insert(root->left, new_pnt, depth + 1);
+    else
+        root->right = insert(root->right, new_pnt, depth + 1);
+  
+    return root;
+}
+// ----------------------------------------------------------
+
+// Function to insert a new point with given point in
+// KD Tree and return new root. It mainly uses above recursive
+// function "insertRec()"
+Node* KDTree::insert( std::vector<int> new_pnt)//Public insert function//removed
 {
-    this->root = this->insert(this->root, new_pnt, 0);
+    return insert(root, new_pnt, 0);
 }
 // -----------------------------------------------------------
 
 // Searches a Point represented by "point[]" in the K D tree.
 // The parameter depth is used to determine current axis.
-bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){
+bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){//Private search function
     // Base cases
     if (root == NULL)
-    {
         return false;
-    }
     if (arePointsSame(new_pnt, root->data))//arguments should be the searching 1-d vec and the node's (root) vec//checking if both points have same values
-    {
         return true;
-    }
-
+  
     // Current dimension is computed using current depth and total
     // dimensions (k)
     unsigned cd = depth % k;
-
+  
     // Compare point with root with respect to cd (Current dimension)
     if (new_pnt[cd] < root->data[cd])//if the value of checking dimension of new point at specific level is less than checking root (node)
-    {
+
         return search(root->left, new_pnt, depth + 1);//Then search in the left subtree
-    }
+  
     return search(root->right, new_pnt, depth + 1);//otherwise (or later recusively) check the right subtree
 }
-
+  
 // -------------------------------------------------------------
+
+    // Searches a Point in the K D tree. It mainly uses
+    // searchRec()
+    bool KDTree::search( std::vector<int> new_pnt)//Public search func// remioved Node *root,
+    {
+        // Pass current depth as 0
+        return search(root, new_pnt, 0);
+    }
