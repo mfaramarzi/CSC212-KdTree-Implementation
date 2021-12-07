@@ -11,7 +11,7 @@ int main(){
 
     tree_obj.populate_tree(vec_2d);//calling populate_tree method onthe tree object
 
-    // tree_obj.write_dot_file();
+    tree_obj.write_dot_file();
 
     std::vector<int>new_pnt = {7,1,1};
     
