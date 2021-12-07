@@ -43,6 +43,8 @@ class KDTree{
 
         inline static int dim_each_rec;
 
+        Node* populate_tree(std::vector<std::vector<int>> vec_2d , int depth );//Tree generator
+
          bool search(Node *root, std::vector<int> new_pnt, int depth);//Private search method
 
          Node *insert(Node *root, std::vector<int> new_pnt, int depth);// Private insert method
@@ -61,7 +63,7 @@ class KDTree{
 
         ~KDTree();//Deconstructor
 
-        Node* populate_tree(std::vector<std::vector<int>> vec_2d , int depth );//Tree generator
+        void populate_tree(std::vector<std::vector<int>> vec_2d );
         
         void insert( std::vector<int> new_pnt);// Public insert Method
         

@@ -9,15 +9,15 @@ int main(){
 
     KDTree tree_obj(vec_2d);//making kdtree object
 
-    tree_obj.populate_tree(vec_2d, tree_obj.depth);//calling populate_tree method onthe tree object
+    tree_obj.populate_tree(vec_2d);//calling populate_tree method onthe tree object
 
     // tree_obj.write_dot_file();
 
     std::vector<int>new_pnt = {7,1,1};
     
-    bool test = tree_obj.search(new_pnt);//Search a point
+    // bool test = tree_obj.search(new_pnt);//Search a point
 
-    std::cout<<test;
+    // std::cout<<test;
    
     // tree_obj.insert(new_pnt);//Point is added??
 

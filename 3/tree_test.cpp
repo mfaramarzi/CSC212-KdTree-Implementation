@@ -145,6 +145,12 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){/
 
     return root_node;
 }
+// --------------------------------------------------------
+
+    void KDTree::populate_tree(std::vector<std::vector<int>> vec_2d ){
+
+        this->root = populate_tree (vec_2d , this->depth);
+    }
 
 // ---------------------------------------------------------
 
