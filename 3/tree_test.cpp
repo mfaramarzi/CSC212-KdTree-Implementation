@@ -127,7 +127,12 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){/
 
     vec_2d_left = std::vector<std::vector<int>>(vec_2d.begin(), vec_2d.begin()+ Med_point_idx); //using std::vector's copy constructor
 
-    vec_2d_right = std::vector<std::vector<int>>( vec_2d.begin()+ Med_point_idx + 1 , vec_2d.end()); //using std::vector's copy constructor
+    if(vec_2d.size()> 1){
+        vec_2d_right = std::vector<std::vector<int>>( vec_2d.begin()+ Med_point_idx + 1 , vec_2d.end()); //using std::vector's copy constructor
+
+    }
+
+    
 
 // Recursive calls on the left node and right node
 
@@ -137,11 +142,14 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){/
 
     root_node->right = populate_tree (vec_2d_right, depth + 1);
 
-    dot_file_conn.push_back(vec_2d[Med_point_idx]);//Making a 2-d vector on nodes, in a sequence that every two adjacent points will have a connection
+    dot_file_conn.push_back(vec_2d[Med_point_idx]);//It is after each left and right recursions.
 
-    dot_file_conn.push_back(root_node->left->data );
+    dot_file_conn.push_back(root_node->left->data );//root node is the same as median point above? 
+
+    dot_file_conn.push_back(vec_2d[Med_point_idx]);//It is after each left and right recursions. Should I have it pushed again here??????????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     dot_file_conn.push_back(root_node->right->data);
+    // Then in the dot file function I can make a line from every two vectors in sequence (med and left and med and right)
 
     return root_node;
 }
@@ -272,3 +280,6 @@ bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){//Private 
     }
 // I should find the first point before each point with higher k and connect those two points
 // push what they point to
+
+// It determnes the connections in dot_file_conn????
+// std::vector<std::pair<std::vector<int> , <std::vector<int>>>dot_file_conn; //I need source and destination??? pair of two vectors, 
