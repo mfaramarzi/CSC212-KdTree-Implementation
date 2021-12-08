@@ -163,10 +163,11 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){/
         dot_file_conn.push_back(root_node->left->data );//root node is the same as median point above? 
 
     }
+    /*
     if(dot_file_conn[-1] != vec_2d[Med_point_idx]){
 
         dot_file_conn.push_back(vec_2d[Med_point_idx]);
-    }
+    }*/
 
     if(root_node->right != nullptr){
 
