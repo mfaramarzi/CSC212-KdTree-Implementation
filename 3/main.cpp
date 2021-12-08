@@ -16,7 +16,7 @@ int main(){
 
     // tree_obj.write_dot_file();
 
-    std::vector<int>new_pnt = {6,5,2};
+    std::vector<int>new_pnt = {7,3,7};
     
     bool test = tree_obj.search(new_pnt);//Search a point
 

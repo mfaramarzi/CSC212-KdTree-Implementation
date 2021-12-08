@@ -8,7 +8,7 @@ Node::Node(std::vector<int> &data)//node constructor getting 1-d vector of point
     {
         this->data.push_back(data[i]); //writing all values of a data point to the node
 
-        std::cout << data[i] <<"\n";//printing the axis (dimension) 0,1,2...k //Why do we need to print them.for testing???????
+        // std::cout << data[i] <<"\n";//printing the axis (dimension) 0,1,2...k //Why do we need to print them.for testing???????
     }
 
     this->left = nullptr;//Assigning two null pointer to the new node's pointer named left
@@ -53,7 +53,7 @@ bool KDTree::arePointsSame(std::vector<int> point1, std::vector<int> point2){
         std::cout<<point1[i]<<" "<<point2[i]<<std::endl;
         if (point1[i] != point2[i])
             return false;}
-    std::cout<<"returning True"<<std::endl;
+    std::cout<<"Point Found"<<std::endl;
     return true;
 }
 
@@ -152,7 +152,7 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){/
     root_node->left = populate_tree (vec_2d_left , depth + 1);//Check the first last
     //popule
 
-    // root_node->right = populate_tree (vec_2d_right, depth + 1);
+    root_node->right = populate_tree (vec_2d_right, depth + 1);
 
     // dot_file_conn.push_back(vec_2d[Med_point_idx]);//It is after each left and right recursions.
 
@@ -210,8 +210,9 @@ void KDTree::insert( std::vector<int> new_pnt)//Public insert function//removed
 // The parameter depth is used to determine current axis.
 bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){//Private search function
     // Base cases
-    if (root == nullptr)
-        return false;
+    if (root == nullptr){
+        std::cout<<"point not found"<<std::endl;
+        return false;}
     if (arePointsSame(new_pnt, root->data))//arguments should be the searching 1-d vec and the node's (root) vec//checking if both points have same values
         return true;
   
@@ -225,6 +226,8 @@ bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){//Private 
         return search(root->left, new_pnt, depth + 1);//Then search in the left subtree
   
     return search(root->right, new_pnt, depth + 1);//otherwise (or later recusively) check the right subtree
+
+    
 }
   
 // -------------------------------------------------------------
