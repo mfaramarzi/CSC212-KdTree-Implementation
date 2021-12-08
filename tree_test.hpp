@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <string>
 #include <cstdlib>
+#include <sstream>
 
 // ------------------------------------------------------------------------------------------------------------------------------------
 class Node
@@ -54,7 +55,9 @@ class KDTree{
 
          Node *insert(Node *root, std::vector<int> new_pnt, int depth);// Private insert method
 
-         std::vector<std::vector<int>> dot_file_conn;
+         std::vector<std::pair<std::vector<int>,std::vector<int>>> dot_file_conn;
+
+         void print_dot(std::vector<std::pair<std::vector<int>,std::vector<int>>> dot);
 
         //  ------------------------------------------------------------------------
 
@@ -76,13 +79,12 @@ class KDTree{
         
         bool search( std::vector<int> new_pnt);// Public Search method
         
-        std::vector<std::vector<int>> inOrder(Node* root);//inorder traverse
+        void inOrder(Node* root);//inorder traverse
 
         void write_dot_file();
 };
 
 #endif
-
 
 
 

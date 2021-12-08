@@ -1,4 +1,4 @@
-#include "tree_test.hpp"
+#include "tree_test1.hpp"
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -120,6 +120,8 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> coord_data , int depth
     void KDTree::populate_tree(std::vector<std::vector<int>> coord_data )
     {
         this->root = populate_tree (coord_data , this->depth);
+        inOrder(this->root);
+        //print_2d(dot_file_conn);
     }
 
 // ---------------------------------------------------------
@@ -189,86 +191,73 @@ bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth )//Private s
     }
     // -------------------------------------------------------
     
-    std::vector<std::vector<int>> KDTree::inOrder(Node* root) // Traverse in order
-    {
-        std::vector<std::vector<int>> v;
-        std::stack<Node*> s;
-        
-        if (root==NULL)
-        {
-            return v;
-        }
-            
-        Node* node = root;
-        
-        while (1) 
-        {
-            if (node != NULL) 
-            {
-                s.push(node);
-                node = node->left;
-            }
-            else 
-            {
-                if (s.empty())
-                    break;
-                    
-                node = s.top();
-                s.pop();
-                v.push_back(node->data);
-                
-                node = node->right;
-            }
-        }
+void KDTree::inOrder(Node* root){
+    if(!root){
+        return;
     }
+
+    this->inOrder(root->left);
+
+    if (root->left != nullptr){
+        dot_file_conn.push_back(std::make_pair(root->data,root->left->data));
+    }
+    if(root->right != nullptr){
+        dot_file_conn.push_back(std::make_pair(root->data,root->right->data));
+    }
+
+    this->inOrder(root->right);
+
+    print_dot(dot_file_conn);
+
+    return;
+}
   
-    //  if(root_node->right != nullptr)
-    //  {
-    //     dot_file_conn.push_back(coord_data[Med_point_idx]);//a node point x
-    //  }
-
-    // if(root_node->left != nullptr)
-    // {
-    //     dot_file_conn.push_back(root_node->left->data );//left child of node x
-    // }
-
-    // if(root_node->right != nullptr)
-    // {
-    //     dot_file_conn.push_back(coord_data[Med_point_idx]);//Again the same node x
-    // }
-
-    // if(root_node->right != nullptr)
-    // {
-    //     dot_file_conn.push_back(root_node->right->data);//right child of node x
-    // }
-
     // -------------------------------------------------------------------------------
 
     // Making .dot file 
 
     void KDTree::write_dot_file()
     {
+        //print_2d(dot_file_conn);
+        
+        std::ofstream file_("dot_file1.txt"); //output file .txt
 
-        std::ofstream file_("dot_file.txt"); //output file .txt
-
-        for (int i = 0; i < dot_file_conn.size() - 1; i++)//for every data point
+        for (int i = 0; i < dot_file_conn.size(); i++)//for every data point
         {
-
-            for(int j = 0 ; j<dot_file_conn[i].size() ; j++)//it is  0,1,2
+            //std::cout << "iterating 1" << std::endl;
+            for(int j = 0 ; j<dot_file_conn[i].first.size() ; j++)//it is  0,1,2
             {
-                file_ << "_" << dot_file_conn[i][j];
+              //  std::cout << "iterating 2" << std::endl;
+                file_ << "_" << dot_file_conn[i].first[j];
             }
            file_  <<" -> ";
            
-           for(int j = 0 ; j<dot_file_conn[i].size() ; j++)
+           for(int j = 0 ; j < dot_file_conn[i].second.size() ; j++)
            {
-               file_ <<"_" << dot_file_conn[i + 1][j] ;     
+               //std::cout << "iterating 3" << std::endl;
+               file_ <<"_" << dot_file_conn[i].second[j] ;     
             }
 
             file_ <<"\n" ;
 
-            i++;
+       // i++;
+            
         }
 
     file_.close(); 
+    }
+
+    void KDTree::print_dot(std::vector<std::pair<std::vector<int>,std::vector<int>>> dot){
+        for(int i = 0; i < dot.size(); i++){
+            
+            for(int j = 0; j < dot[i].first.size(); j++){
+                std::cout << "_" << dot[i].first[j];
+            }
+            std::cout << " -> ";
+            for(int j = 0; j < dot[i].second.size(); j++){
+                std::cout << "_" << dot[i].second[j];
+            }
+            std::cout << std::endl;
+        }
+        std::cout << "_____________" << std::endl;
     }
