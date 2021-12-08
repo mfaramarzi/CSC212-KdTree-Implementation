@@ -1,4 +1,4 @@
-#include "tree_test1.hpp"
+#include "tree_test.hpp"
 
 // ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -190,62 +190,70 @@ bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth )//Private s
             return search(root, new_pnt, 0);  // Pass current depth as 0
     }
     // -------------------------------------------------------
-    
-    //Inorder function for traversing the tree
+  //Recursive function to make connections between nodes (second version)  
 void KDTree::inOrder(Node* root){
-    //base case for recursion
     if(!root){
         return;
     }
 
-    //recursively go down the left branches
     this->inOrder(root->left);
 
-    //as long as there is a datapoint in the left side add it to the dot_file_con vector
     if (root->left != nullptr){
         dot_file_conn.push_back(std::make_pair(root->data,root->left->data));
     }
-    //Same as above but for the right side
     if(root->right != nullptr){
         dot_file_conn.push_back(std::make_pair(root->data,root->right->data));
     }
 
-    //recursively go down the right branches
     this->inOrder(root->right);
 
-    //print_dot(dot_file_conn);
 
     return;
 }
   
+  // ------------------------------------------------------------------------------
+
+//A function to make dot file contents (Second version) //Vector of pair of vectors//This func is called in inorder func
+    void KDTree::print_dot(std::vector<std::pair<std::vector<int>,std::vector<int>>> dot){
+
+        std::ofstream file_("dot_file.txt"); //output file .txt
+
+        for(int i = 0; i < dot.size(); i++){
+            
+            for(int j = 0; j < dot[i].first.size(); j++){
+                file_ <<  "_" << dot[i].first[j];
+            }
+            file_ << " -> ";
+            for(int j = 0; j < dot[i].second.size(); j++){
+                file_ <<  "_" << dot[i].second[j];
+            }
+            file_ <<  std::endl;
+        }
+        file_.close(); 
+    }
     // -------------------------------------------------------------------------------
 
-    // Making .dot file 
+    // A function to make dot file contents (first version)
 
     void KDTree::write_dot_file()
     {
         //print_2d(dot_file_conn);
         
-        std::ofstream file_("dot_file1.txt"); //output file .txt
+        std::ofstream file_("dot_file.txt"); //output file .txt
 
-        for (int i = 0; i < dot_file_conn.size(); i++)//for every pair in the vector
+        for (int i = 0; i < dot_file_conn.size(); i++)//for every data point
         {
             //std::cout << "iterating 1" << std::endl;
-
-            //Go through the first vector in the pair which is the source
-            for(int j = 0 ; j<dot_file_conn[i].first.size() ; j++)
+            for(int j = 0 ; j<dot_file_conn[i].first.size() ; j++)//it is  0,1,2
             {
               //  std::cout << "iterating 2" << std::endl;
-                //these are the source coordinates
-                file_ << "_" << dot_file_conn[i].first[j]; //notaiton for the Graphing program
+                file_ << "_" << dot_file_conn[i].first[j];
             }
-           file_  <<" -> "; //notation for the links in the graphing program
+           file_  <<" -> ";
            
-           //Go through the second vector in the pair which is the destination
            for(int j = 0 ; j < dot_file_conn[i].second.size() ; j++)
            {
                //std::cout << "iterating 3" << std::endl;
-               //these are the destiantion coordinates
                file_ <<"_" << dot_file_conn[i].second[j] ;     
             }
 
@@ -256,20 +264,4 @@ void KDTree::inOrder(Node* root){
         }
 
     file_.close(); 
-    }
-
-    //prints the dot file vector in the same notation as the graph
-    void KDTree::print_dot(std::vector<std::pair<std::vector<int>,std::vector<int>>> dot){
-        for(int i = 0; i < dot.size(); i++){
-            
-            for(int j = 0; j < dot[i].first.size(); j++){
-                std::cout << "_" << dot[i].first[j];
-            }
-            std::cout << " -> ";
-            for(int j = 0; j < dot[i].second.size(); j++){
-                std::cout << "_" << dot[i].second[j];
-            }
-            std::cout << std::endl;
-        }
-        std::cout << "_____________" << std::endl;
     }
