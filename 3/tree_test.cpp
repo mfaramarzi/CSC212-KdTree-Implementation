@@ -83,6 +83,14 @@ KDTree::~KDTree(){//deconstructor of KDTree type object
 }
 // ---------------------------------------------------------------
 
+void KDTree::print_2d(std::vector<std::vector<int>> *v){
+    for (int i = 0; i < v->size(); i++){
+        for (int j = 0; j < (*v)[i].size(); j++){
+            std::cout << (*v)[i][j];
+    }
+}
+}
+
 Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){// Function to CONSTRUCT the KD tree
 
     //base case, when there is no more datapoint in the vector
@@ -155,6 +163,7 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){/
 
     root_node->right = populate_tree (vec_2d_right, depth + 1);
     
+    //print_2d(&dot_file_conn);
 
     dot_file_conn.push_back(vec_2d[Med_point_idx]);//It is after each left and right recursions.
 
@@ -163,11 +172,13 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){/
         dot_file_conn.push_back(root_node->left->data );//root node is the same as median point above? 
 
     }
-    /*
+    
     if(dot_file_conn[-1] != vec_2d[Med_point_idx]){
 
-        dot_file_conn.push_back(vec_2d[Med_point_idx]);
-    }*/
+       // if (root_node->left != nullptr && root_node->right != nullptr){
+        dot_file_conn.push_back(vec_2d[Med_point_idx]);//It is after each left and right recursions.
+        //}
+    }
 
     if(root_node->right != nullptr){
 
@@ -285,13 +296,15 @@ bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){//Private 
 
     void KDTree::write_dot_file(){
 
+        
+
         std::ofstream file_("dot_file.txt"); //output file .txt
 
         for (int i = 0; i < dot_file_conn.size() - 1; i++){//for every data point
 
             for(int j = 0 ; j<dot_file_conn[i].size() ; j++){//it is  0,1,2
-
                 file_ << "_" << dot_file_conn[i][j] ;
+                
             }
 
            file_  <<" -> ";
