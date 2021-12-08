@@ -191,23 +191,29 @@ bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth )//Private s
     }
     // -------------------------------------------------------
     
+    //Inorder function for traversing the tree
 void KDTree::inOrder(Node* root){
+    //base case for recursion
     if(!root){
         return;
     }
 
+    //recursively go down the left branches
     this->inOrder(root->left);
 
+    //as long as there is a datapoint in the left side add it to the dot_file_con vector
     if (root->left != nullptr){
         dot_file_conn.push_back(std::make_pair(root->data,root->left->data));
     }
+    //Same as above but for the right side
     if(root->right != nullptr){
         dot_file_conn.push_back(std::make_pair(root->data,root->right->data));
     }
 
+    //recursively go down the right branches
     this->inOrder(root->right);
 
-    print_dot(dot_file_conn);
+    //print_dot(dot_file_conn);
 
     return;
 }
@@ -222,19 +228,24 @@ void KDTree::inOrder(Node* root){
         
         std::ofstream file_("dot_file1.txt"); //output file .txt
 
-        for (int i = 0; i < dot_file_conn.size(); i++)//for every data point
+        for (int i = 0; i < dot_file_conn.size(); i++)//for every pair in the vector
         {
             //std::cout << "iterating 1" << std::endl;
-            for(int j = 0 ; j<dot_file_conn[i].first.size() ; j++)//it is  0,1,2
+
+            //Go through the first vector in the pair which is the source
+            for(int j = 0 ; j<dot_file_conn[i].first.size() ; j++)
             {
               //  std::cout << "iterating 2" << std::endl;
-                file_ << "_" << dot_file_conn[i].first[j];
+                //these are the source coordinates
+                file_ << "_" << dot_file_conn[i].first[j]; //notaiton for the Graphing program
             }
-           file_  <<" -> ";
+           file_  <<" -> "; //notation for the links in the graphing program
            
+           //Go through the second vector in the pair which is the destination
            for(int j = 0 ; j < dot_file_conn[i].second.size() ; j++)
            {
                //std::cout << "iterating 3" << std::endl;
+               //these are the destiantion coordinates
                file_ <<"_" << dot_file_conn[i].second[j] ;     
             }
 
@@ -247,6 +258,7 @@ void KDTree::inOrder(Node* root){
     file_.close(); 
     }
 
+    //prints the dot file vector in the same notation as the graph
     void KDTree::print_dot(std::vector<std::pair<std::vector<int>,std::vector<int>>> dot){
         for(int i = 0; i < dot.size(); i++){
             
