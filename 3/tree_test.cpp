@@ -8,7 +8,7 @@ Node::Node(std::vector<int> &data)//node constructor getting 1-d vector of point
     {
         this->data.push_back(data[i]); //writing all values of a data point to the node
 
-        // std::cout << data[i] <<"\n";//printing the axis (dimension) 0,1,2...k //Why do we need to print them.for testing???????
+        std::cout << data[i] <<"\n";//printing the axis (dimension) 0,1,2...k //Why do we need to print them.for testing???????
     }
 
     this->left = nullptr;//Assigning two null pointer to the new node's pointer named left
@@ -152,15 +152,27 @@ Node* KDTree::populate_tree(std::vector<std::vector<int>> vec_2d , int depth ){/
     root_node->left = populate_tree (vec_2d_left , depth + 1);//Check the first last
     //popule
 
+
     root_node->right = populate_tree (vec_2d_right, depth + 1);
+    
 
-    // dot_file_conn.push_back(vec_2d[Med_point_idx]);//It is after each left and right recursions.
+    dot_file_conn.push_back(vec_2d[Med_point_idx]);//It is after each left and right recursions.
 
-    // dot_file_conn.push_back(root_node->left->data );//root node is the same as median point above? 
+    if(root_node->left != nullptr){
 
-    // dot_file_conn.push_back(vec_2d[Med_point_idx]);//It is after each left and right recursions. Should I have it pushed again here??????????????????????????!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        dot_file_conn.push_back(root_node->left->data );//root node is the same as median point above? 
 
-    // dot_file_conn.push_back(root_node->right->data);
+    }
+    if(dot_file_conn[-1] != vec_2d[Med_point_idx]){
+
+        dot_file_conn.push_back(vec_2d[Med_point_idx]);
+    }
+
+    if(root_node->right != nullptr){
+
+        dot_file_conn.push_back(root_node->right->data);
+    }
+
     // Then in the dot file function I can make a line from every two vectors in sequence (med and left and med and right)
 
     return root_node;
@@ -276,7 +288,7 @@ bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){//Private 
 
         for (int i = 0; i < dot_file_conn.size() - 1; i++){//for every data point
 
-            for(int j = 0 ; j<dot_file_conn[i].size() ; j++){
+            for(int j = 0 ; j<dot_file_conn[i].size() ; j++){//it is  0,1,2
 
                 file_ << "_" << dot_file_conn[i][j] ;
             }
@@ -289,6 +301,8 @@ bool KDTree::search(Node *root, std::vector<int> new_pnt, int depth ){//Private 
             }
 
             file_ <<"\n" ;
+
+            i++;
         }
 
     file_.close(); 

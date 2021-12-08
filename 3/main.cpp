@@ -14,11 +14,11 @@ int main(){
 
     // std::cout<<"mmmmmm";
 
-    // tree_obj.write_dot_file();
+    tree_obj.write_dot_file();
 
-    std::vector<int>new_pnt = {7,3,7};
+    // std::vector<int>new_pnt = {7,3,7};
     
-    bool test = tree_obj.search(new_pnt);//Search a point
+    // bool test = tree_obj.search(new_pnt);//Search a point
 
     // std::cout<<test;
    
