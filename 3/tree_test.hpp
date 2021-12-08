@@ -51,8 +51,6 @@ class KDTree{
 
          std::vector<std::vector<int>> dot_file_conn;
 
-         void print_2d(std::vector<std::vector<int>> *v);
-
         //  ------------------------------------------------------------------------
 
     public:
@@ -71,14 +69,11 @@ class KDTree{
         
         bool search( std::vector<int> new_pnt);// Public Search method
         
-        // Delete Method??????????????
-
-        // nearest neighbor method??????????????????
-        
         std::vector<std::vector<int>> inOrder(Node* root);//inorder traverse
 
         void write_dot_file();
 };
+
 
 
 
