@@ -14,7 +14,7 @@ void IO::write_dataset()
 {
     srand (time(NULL)); //random seed.
 
-    std::ofstream file_("datapoints.txt"); //Making the output file stream, sai=ving in directory with name "datapoints.txt"
+    std::ofstream file_("datapoints.txt"); //Making the output file stream, saving in directory with name "datapoints.txt"
 
     for (int i = 0; i < num_points; i++)//for number of points times
     {
