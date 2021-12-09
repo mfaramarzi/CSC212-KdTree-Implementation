@@ -27,4 +27,7 @@ Example execuation command:
 
 
 
-* _Search and Insertion of a new point could be performed by  commenting in the corrosponding lines in the main file_*
+* _Search and Insertion of a new point could be performed by  commenting in the corrosponding lines in the main file_
+* _It is recommended to copy the contents of "dot_file.txt" and paste to the online Graphviz website to visualize graph as below:
+
+![](graphviz.jpg)
