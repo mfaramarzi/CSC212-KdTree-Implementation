@@ -20,3 +20,11 @@ Example execuation command:
 ./tree 50 3 10 10 10
   
 ### The following steps will be performed by executing the above line:
+
+1. Making random data points according to the execution command input and saving points to a text file named "datapoints.txt"
+2. Constructing and populating the K-D Tree
+3. Performing inorder traversal over the tree's node and recording the links between all nodes(in .dot format) to a text file named "dot_file.txt"
+
+
+
+** _Search and Insertion of a new point could be performed by  commenting in the corrosponding lines in the main file_**
