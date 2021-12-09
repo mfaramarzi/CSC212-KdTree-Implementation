@@ -1,5 +1,5 @@
-#include"tree_test.hpp"
 
+#include"tree.hpp"
 
 class IO{
 
@@ -11,9 +11,7 @@ class IO{
 
         std::vector<int>max_dim_vec;//vector of naximum value for every dimension
 
-        friend class KDTree;
-
-
+        friend class KDTree;//Making KDTree class friend of IO, so it can have access to IO private contents
 
     public:
 
@@ -23,9 +21,8 @@ class IO{
 
         ~IO(); //io deconstructor
 
-        void write_dataset ();
+        void write_dataset ();//Writing a random dataset to a file named "datapoints.txt" in the current directory
 
-        void ReadFile();
-
-
+        void ReadFile();//Reading "datapoints.txt" to a 2-d vector in KDTree class named "coord_data"
 };
+
