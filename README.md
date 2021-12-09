@@ -27,4 +27,4 @@ Example execuation command:
 
 
 
-** _Search and Insertion of a new point could be performed by  commenting in the corrosponding lines in the main file_**
+* _Search and Insertion of a new point could be performed by  commenting in the corrosponding lines in the main file_*
