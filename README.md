@@ -14,3 +14,5 @@ g++ -std=c++17 main.cpp tree.cpp IO.cpp -o tree
 Each phrase in <> below is seperated with a space in terminal:
 
 <"tree"> <your arbitrary number of points> <your arbitrary dimensions (k)> <maximum values of each dimension (k times)>
+  
+### The following steps will be performed by executing the above line:
